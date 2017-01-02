@@ -1,0 +1,207 @@
+app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
+	function($scope,$rootScope,$sce,$location,$window) {
+
+		/** CONFIG **/
+		
+			//$scope.site_address = $location.$$absUrl.split('0/')[1].split('/')[0];			
+			$scope.master_address = '12MVkvYGcRW6u2NYbpfwVad1oQeyG4s9Er';			
+			$scope.master_name = 'IFS';
+			$scope.inner_path =  'data/channel.json';
+			$scope.media_type = 'games';
+			//$scope.site_address = '1Nrpa9niDCoY9wpJ5s4AEeoMjj1Bi6RhG6';
+
+		/** /CONFIG **/
+
+		/** UI **/
+
+		    // select user
+		    $scope.selectUser = function(){
+		    	Page.cmd("certSelect", [["zeroid.bit"]]);
+		    };
+
+			// loading & msg
+			$scope.showLoadingMsg = function(msg){
+				$scope.msg = msg;
+				$scope.loading = true;
+			};
+
+			// finish loading
+			$scope.finishLoading = function(){
+				$scope.loading = false;
+			};
+
+		/** /UI **/
+
+		/** INIT **/
+
+			// init
+			$scope.init = function(){
+				
+										
+				// get site info
+				Page.cmd("siteInfo", {}, function(site_info) {
+					// site info
+					Page.site_info = site_info;
+					
+					//console.log(site_info);
+					$scope.site_address = site_info.address;
+					// peers
+					$scope.peers = Page.site_info.settings.peers;
+					// user is owner
+					$scope.owner = Page.site_info.settings.own;
+					
+					$scope.settings = Page.site_info.settings;	
+
+					// apply to scope
+					$scope.$apply(function(){
+						// get jsons
+						$scope.getSitesJsons();
+					});
+				});
+
+				//Page.cmd("optionalHelp", ["data", "All files"]);
+				//Page.cmd("optionalHelp", ["uploads", "All files"]);				
+				//Page.cmd("OptionalHelpRemove", ["data/users/" + _this.user.auth_address, _this.user.hub]);
+
+				Page.cmd("optionalFileList", {
+				        address: $scope.site_address,
+				        limit:2000
+				      },function(site_files){				      						      		
+				      		$scope.optionalFileList = site_files;	
+				      		console.log($scope.optionalFileList.length );				      		
+				      });		
+				
+			};
+
+			// get sites jsons
+			$scope.getSitesJsons = function(){
+				// get content.json
+				Page.cmd("fileGet", { "inner_path": 'content.json', "required": false },function(data) {
+		    		// store content.json to scope
+		    		$scope.contentJson = JSON.parse(data);
+		    		// get channel.json
+					Page.cmd("fileGet", { "inner_path": $scope.inner_path, "required": false },function(data) {
+						// store channel.json to scope
+						$scope.chJson = JSON.parse(data);	
+
+						var fileTotalLength = 0;
+						var filesTotal=[];
+						for (var i in $scope.chJson){
+							if (Object.prototype.toString.call($scope.chJson[i]) === '[object Array]'){
+								fileTotalLength+=$scope.chJson[i].length;	
+								filesTotal = filesTotal.concat($scope.chJson[i]);							
+							}
+						}	
+						$scope.fileTotalLength = fileTotalLength;
+						$scope.filesTotal = filesTotal;
+												
+						angular.forEach($scope.filesTotal, function(value, key) {
+							var path = value.path;
+							value.x_is_load = false;
+							value.x_peer = 0;
+							for (var i = 0, len = $scope.optionalFileList.length; i < len; i++) {
+							  var inner_path = $scope.optionalFileList[i].inner_path;
+							  if(path==inner_path)
+								{
+									value.x_is_load=true;
+									value.x_peer=$scope.optionalFileList[i].peer;
+									break;
+								}
+							}													  
+						});		
+
+
+						// render available item media types
+						$scope.renderMediaTypes();
+
+						// render channel
+						$scope.renderChannel(data);
+						// apply to scope
+						$scope.$apply();
+				    });
+		    	});
+			};
+
+			// render media types
+			$scope.renderMediaTypes = function(){
+				$scope.media_types = [];
+				for (var i in $scope.chJson){
+					if (Object.prototype.toString.call($scope.chJson[i]) === '[object Array]'){
+						$scope.media_types.push(i);
+						
+					}
+				}				
+			};
+
+			// render channel
+			$scope.renderChannel = function(data){
+				$scope.channelLoading = false;
+				var update = false;
+				if ($scope.chJson){
+					$scope.channel = $scope.chJson.channel;
+					if (!$scope.channel.name) {
+						update = true;
+						$scope.chJson.channel.name = $scope.contentJson.title;
+					}
+					if (!$scope.channel.description) {
+						update = true;
+						$scope.chJson.channel.description = $scope.contentJson.description;
+					}
+					if (update === true){
+						$scope.updateChannelJson($scope.chJson);
+					}
+				}			
+			};
+
+		/** INIT **/
+
+		/** UPDATE CHANNEL **/
+
+			// update content json in scope
+			$scope.updateContentJson = function(){
+		    	// get content.json & store to scope
+		    	$.getJSON('/'+$scope.site_address+'/content.json',function(data){
+		    		$scope.contentJson = data;
+		    	});
+			};
+
+			// update & save channel json
+			$scope.updateChannelJson = function(){
+				var json_raw = unescape(encodeURIComponent(JSON.stringify($scope.chJson, void 0, '\t')));
+				// write to file - channel.json
+				Page.cmd("fileWrite", [$scope.inner_path, btoa(json_raw)], function(res) {
+					// overwrite content.json title & description
+					if ($scope.chJson){
+						$scope.contentJson.title = $scope.chJson.channel.name;
+						$scope.contentJson.description = $scope.chJson.channel.description;
+					}
+					var json_raw = unescape(encodeURIComponent(JSON.stringify($scope.contentJson, void 0, '\t')));
+					// write to file - content.json
+					Page.cmd("fileWrite", ['content.json',btoa(json_raw)],function(res){
+						// sign & publish
+						Page.cmd("sitePublish",["stored"], function(res){
+							console.log(res);
+							if (res === 'ok'){
+								// apply to scope
+								$scope.$apply(function(){
+									Page.cmd("wrapperNotification", ["done", "Channel Updated!",10000]);
+									$window.location.href = '/'+ $scope.site_address +'/';
+								});
+							} else {
+								Page.cmd("wrapperNotification", ["info", "Please clone this site to create your own channel",10000]);							
+							}
+						});
+					});
+				});
+			};
+
+			// rootScope on update channel
+			$rootScope.$on('onUpdateChannel',function(event,mass){
+				$scope.showLoadingMsg('updating channel');
+				$scope.updateChannelJson();
+			});
+
+		/** /UPDATE CHANNEL **/
+
+	}
+]);
