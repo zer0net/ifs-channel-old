@@ -77,7 +77,7 @@ app.directive('multipleFilesUpload', ['$location',
 					    return [text.slice(0, index), text.slice(index + 1)]
 					}
 					var file_type = splitByLastDot(file.name)[1];
-					var file_name = file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss").split('.' + file_type)[0].replace(/[^\w\s]/gi, '') + '.' + file_type;
+					var file_name = file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss").split('.' + file_type)[0].replace(/[^\w\s]/gi, '_') + '.' + file_type;
 
 					// item obj
 					var item = {
