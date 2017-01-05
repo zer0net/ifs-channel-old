@@ -105,7 +105,14 @@ app.directive('multipleFilesUpload', ['$location',
 						item.file_size = file.size;
 						item.media_type = 'game';
 						item.path = 'uploads/games/'+file_name;
-					} else {
+					}else if (file_type === 'sna') {
+						item_id_name = 'game_id';
+						item_file_name = 'file_name';						
+						item.file_size = file.size;
+						item.media_type = 'game';
+						item.path = 'uploads/games/'+file_name;
+					} 
+					else {
 						item_id_name = 'video_id';
 						item_file_name = 'file_name';						
 						item.media_type = 'video';
