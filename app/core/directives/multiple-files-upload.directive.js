@@ -133,6 +133,7 @@ app.directive('multipleFilesUpload', ['$location',
 							$scope.chJson.next_item_id += 1;
 							// push item to channel json items
 							var media_type = item.media_type + 's';
+							if (!$scope.chJson[media_type]){$scope.chJson[media_type] = [];}
 							$scope.chJson[media_type].push(item);
 							// upload next file
 							$scope.uploadNextFile();
