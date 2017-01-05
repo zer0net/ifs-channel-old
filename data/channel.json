@@ -1,6 +1,24 @@
 {
-	"next_item_id": 1,
-	"channel": {},
-	"games":[],
-	"videos":[]
+	"next_item_id": 7,
+	"channel": {
+		"name": "myIFS Filehub master",
+		"description": "Clone this file hub template to create your own IFS file hub type"
+	},
+	"games": [],
+	"videos": [
+		{
+			"file_type": "ogv",
+			"channel": "1HLLBvUAGzbHzEjGtmgah4iva4B8tggpRq",
+			"title": "CaT SaLoOn 12345 (1)",
+			"date_added": 1483617686824,
+			"published": false,
+			"media_type": "video",
+			"file_size": 8947897,
+			"path": "uploads/videos/CaT_SaLoOn_12345_1.ogv",
+			"file_name": "CaT_SaLoOn_12345_1.ogv",
+			"video_id": 6,
+			"x_is_load": true,
+			"x_peer": 1
+		}
+	]
 }
