@@ -32,7 +32,7 @@ app.directive('fileUpload', ['$sce',
 					// apply reader info to scope
 					$scope.file = file;
 					// render file name
-					var file_name = $scope.file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss");
+					var file_name = file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss");
 					// get file type
 					var splitByLastDot = function(text) {
 					    var index = text.lastIndexOf('.');
