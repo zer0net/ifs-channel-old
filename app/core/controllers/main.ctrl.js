@@ -43,7 +43,7 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					// site info
 					Page.site_info = site_info;
 					
-					//console.log(site_info);
+					console.log(site_info);
 					$scope.site_address = site_info.address;
 					// peers
 					$scope.peers = Page.site_info.settings.peers;
