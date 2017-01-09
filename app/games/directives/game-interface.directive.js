@@ -61,6 +61,13 @@ app.directive('gameInterface', [
 				// determine game type acording to file type
 				if ($scope.item.file_type === 'zip'){
 					$scope.game_type = 'DOS';
+					var exeField = {
+						label:'Executable File Name',
+						type:'executable-file',
+						model:'file_name',
+						flex:'100'
+					};
+					$scope.formTabs[0].sections[0].fileds.push(exeField)
 					// if mode is create
 					if ($scope.mode === 'create'){
 						$scope.readZipFile();
