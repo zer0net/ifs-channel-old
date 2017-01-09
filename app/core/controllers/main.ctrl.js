@@ -36,14 +36,13 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 
 			// init
 			$scope.init = function(){
-				
-										
+
 				// get site info
 				Page.cmd("siteInfo", {}, function(site_info) {
 					// site info
+					console.log(site_info);
 					Page.site_info = site_info;
 					
-					console.log(site_info);
 					$scope.site_address = site_info.address;
 					// peers
 					$scope.peers = Page.site_info.settings.peers;
@@ -52,6 +51,9 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					
 					$scope.settings = Page.site_info.settings;	
 
+					$scope.optionalHelp=site_info.settings.autodownloadoptional;
+					
+
 					// apply to scope
 					$scope.$apply(function(){
 						// get jsons
@@ -59,20 +61,37 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					});
 				});
 
-				//Page.cmd("optionalHelp", ["data", "All files"]);
-				//Page.cmd("optionalHelp", ["uploads", "All files"]);				
-				//Page.cmd("OptionalHelpRemove", ["data/users/" + _this.user.auth_address, _this.user.hub]);
-
 				Page.cmd("optionalFileList", {
 				        address: $scope.site_address,
 				        limit:2000
 				      },function(site_files){				      						      		
-				      		$scope.optionalFileList = site_files;	
-				      		console.log($scope.optionalFileList.length );				      		
-				      });		
+				      		$scope.optionalFileList = site_files;					      		
+				      });	
 				
 			};
 
+			$scope.onOptionalHelp = function()
+			{
+				Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
+				          return function() {
+				            Page.site_info.settings.autodownloadoptional = true;				           
+				          };
+				        })(this));
+				//Page.cmd("optionalHelp", ["uploads", "All files"]);	
+				$scope.optionalHelp = true;	
+			}
+			$scope.onRemoveOptionalHelp = function()
+			{
+
+				Page.cmd("OptionalHelpAll", [false, $scope.site_address], (function(_this) {
+				          return function() {
+				            Page.site_info.settings.autodownloadoptional = false;				           
+				          };
+				        })(this));
+				//Page.cmd("OptionalHelpRemove", ["uploads"]);		
+				$scope.optionalHelp = false;
+			}
+			
 			// get sites jsons
 			$scope.getSitesJsons = function(){
 				// get content.json

@@ -165,7 +165,11 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 				'</div>' + 
 			'</div>' + 
 			'<div class="pull-right col-xs-7">' + 
-				'<ul>' + 					
+				'<ul>' + 		
+					'<li>' + 						
+							'<md-button ng-if="optionalHelp==false" class="md-primary md-raised edgePadding pull-left" ng-click="onOptionalHelp()"> distribute all files</md-button>' + 				       							
+							'<md-button ng-if="optionalHelp==true" class="md-primary md-raised edgePadding pull-left" ng-click="onRemoveOptionalHelp()">stop distribute all files</md-button>' + 				       							
+		        	'</li>' + 			
 		        	'<li  ng-if="owner" file-browser>' + 						
 							'<md-button class="md-primary md-raised edgePadding pull-left" ng-click="multipleUploadDialog($event)">Upload</md-button>' + 				       
 		        	'</li>' + 		        	
