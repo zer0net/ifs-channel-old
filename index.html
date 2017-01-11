@@ -41,69 +41,7 @@
 
 	    <!-- MAIN -->
 	    <md-content ng-if="chJson" ng-hide="loading" flex layout-padding class="main-content">
-			
-			
-			
-			<!-- file browser -->
-			<!--
-
-			<section ng-if="contentJson" file-browser ng-init="generateSiteTree()" layout="row">
-				
-				<md-content flex="100">										
-					<section ng-show="directory">
-						<h3><span class="glyphicon glyphicon-folder-open"></span> <a ng-click="goBack()">{{directory.name}}</a></h3>
-						<ul>
-							<li ng-repeat="item in directory.files track by $index" layout="column" ng-init="renderListItem(item)">
-							<div ng-if="item.is_item" layout="row">
-								<span flex="60">
-									<span class="glyphicon glyphicon-{{item.file_icon}}"></span>
-									{{item.name}} 
-								</span>
-								<span flex="10" am-time-ago="item.date_added"></span>
-								<span flex="10">{{item.size|filesize}}</span>
-								<div flex="20" class="item-options">
-									<span ng-if="item.published" class="glyphicon glyphicon-eye-open"></span>
-									<span ng-if="!item.published" class="glyphicon glyphicon-eye-close"></span>
-									<span ng-click="deleteItem(item)" class="glyphicon glyphicon-trash"></span>
-									<a href="{{item.editUrl}}"><span class="glyphicon glyphicon-pencil"></span></a>
-								</div>
-							</div>
-							<div ng-if="!item.is_item" layout="row">
-								<span flex="90">
-									<span class="glyphicon glyphicon-picture"></span>
-									{{item}}
-								</span>
-								<div flex="10" class="item-options">
-									<span ng-click="deleteImage(item)" class="glyphicon glyphicon-trash"></span>
-								</div>
-							</div>
-							</li>
-						</ul>
-					</section>
-
-					<section ng-hide="directory">
-						<ul>
-							<li ng-repeat="directory in directories">
-								<span class="glyphicon glyphicon-folder-close"></span>
-								<a ng-click="showDirectoryContent(directory)">{{directory.name}}({{directory.files.length}})
-								</a>
-							</li>
-						</ul>
-						<span ng-if="!directories">uploads directory is empty, upload files!</span>
-					</section>
-
-				</md-content>
-				-->
-
-				<!--<game-list ng-if="chJson.games"></game-list>-->
-				<file-list></file-list>
-				
-			
-				
-				
-			</section>
-			<!-- /file browser -->
-
+			<file-list></file-list>
 	    </md-content>
 	    <!-- /MAIN -->
 
@@ -163,17 +101,15 @@
 		<script type="text/javascript" src="app/application.js"></script>		
 		<script type="text/javascript" src="app/core/controllers/main.ctrl.js"></script>
 		<script type="text/javascript" src="app/core/controllers/items.ctrl.js"></script>
-		<script type="text/javascript" src="app/core/controllers/files.ctrl.js"></script>
 		<script type="text/javascript" src="app/core/directives/site-header.directive.js"></script>
 		<script type="text/javascript" src="app/core/directives/my-channel.directive.js"></script>
-		<script type="text/javascript" src="app/core/directives/file-browser.directive.js"></script>
 		<script type="text/javascript" src="app/core/directives/multiple-files-upload.directive.js"></script>
 		<script type="text/javascript" src="app/core/directives/dropzone.directive.js"></script>
+		<script type="text/javascript" src="app/core/directives/file-list.directive.js"></script>
 		<script type="text/javascript" src="app/core/filters/file-size.filter.js"></script>
 
 		<!-- app games -->
 		<script type="text/javascript" src="app/games/directives/game-list.directive.js"></script>
-		<script type="text/javascript" src="app/games/directives/file-list.directive.js"></script>
 		<script type="text/javascript" src="app/games/directives/dosbox.directive.js"></script>
 		<script type="text/javascript" src="app/games/directives/nes-emulator.directive.js"></script>
 
