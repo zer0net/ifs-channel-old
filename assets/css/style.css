@@ -5,6 +5,9 @@
     More info at: http://lesselements.com
   ---------------------------------------------------*/
 /* MIXINS */
+/* /MIXINS */
+/* COLORS */
+/* /COLORS */
 /** GENERAL **/
 *:focus,
 *:hover {
@@ -450,3 +453,9 @@ section.container {
   max-height: 400px;
   background-color: black;
 }
+/* /VIDEO VIEW */
+/* FILE LIST */
+#file-list #file-search-form span.btn {
+  margin-left: 5px;
+}
+/* /FILE LIST */

@@ -130,12 +130,9 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 									break;
 								}
 							}													  
-						});		
-
-
+						});
 						// render available item media types
 						$scope.renderMediaTypes();
-
 						// render channel
 						$scope.renderChannel(data);
 						// apply to scope
@@ -150,7 +147,6 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 				for (var i in $scope.chJson){
 					if (Object.prototype.toString.call($scope.chJson[i]) === '[object Array]'){
 						$scope.media_types.push(i);
-						
 					}
 				}				
 			};

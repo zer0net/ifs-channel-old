@@ -67,7 +67,7 @@ app.directive('gameInterface', [
 						model:'file_name',
 						flex:'100'
 					};
-					$scope.formTabs[0].sections[0].fileds.push(exeField)
+					$scope.formTabs[0].sections[0].fields.push(exeField)
 					// if mode is create
 					if ($scope.mode === 'create'){
 						$scope.readZipFile();

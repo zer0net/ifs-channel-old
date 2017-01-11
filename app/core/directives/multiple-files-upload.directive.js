@@ -91,35 +91,25 @@ app.directive('multipleFilesUpload', ['$location',
 					// render item
 					var item_id_name;
 					var item_file_name;
-					if (file_type === 'zip') {
+					if (file_type === 'zip' || file_type === 'nes' || file_type === 'sna' || file_type === 'dsk' || file_type === 'bin') {
 						item_id_name = 'game_id';
-						item.zip_size = file.size;
-						item_file_name = 'zip_name';														
-						item.media_type = 'game';
-						item.file_name=file_name;
-						item.file_size=file.size;
-						item.path = 'uploads/games/'+file_name;
-					} else if (file_type === 'nes') {
-						item_id_name = 'game_id';
-						item_file_name = 'file_name';						
 						item.file_size = file.size;
 						item.media_type = 'game';
 						item.path = 'uploads/games/'+file_name;
-					}else if (file_type === 'sna') {
-						item_id_name = 'game_id';
-						item_file_name = 'file_name';						
-						item.file_size = file.size;
-						item.media_type = 'game';
-						item.path = 'uploads/games/'+file_name;
-					} 
-					else {
+						if (file_type === 'zip'){
+							item.file_name = file_name;
+							item.zip_size = file.size;
+							item_file_name = 'zip_name';							
+						} else {
+							item_file_name = 'file_name';
+						}
+					} else if (file_type === 'mp4' || file_type === 'ogg' || file_type === 'webm' || file_type === 'ogv') {
 						item_id_name = 'video_id';
-						item_file_name = 'file_name';						
-						item.media_type = 'video';
 						item.file_size = file.size;
+						item.media_type = 'video';
 						item.path = 'uploads/videos/'+file_name;						
+						item_file_name = 'file_name';
 					}
-
 					// item file name
 					item[item_file_name] = file_name;
 					// item id
