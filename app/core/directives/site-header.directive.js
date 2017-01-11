@@ -177,6 +177,7 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 		        		'<a href="/{{master_address}}/register.html">' + 
 		        			'<md-button class="md-primary md-raised edgePadding pull-left">Register</md-button>' + 
 				        '</a>' + 
+
 					'</li>' + 
 					'<li>' + 
 		        		'<a ng-click="openHelpDialog()" class="how-to-btn">' + 

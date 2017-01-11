@@ -71,25 +71,28 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 			};
 
 			$scope.onOptionalHelp = function()
-			{
-				Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
-				          return function() {
-				            Page.site_info.settings.autodownloadoptional = true;				           
-				          };
-				        })(this));
-				//Page.cmd("optionalHelp", ["uploads", "All files"]);	
+			{				
 				$scope.optionalHelp = true;	
+				 return Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
+		          return function() {
+		            Page.site_info.settings.autodownloadoptional =true;
+		            return true;
+		          };
+		        })(this));
 			}
 			$scope.onRemoveOptionalHelp = function()
 			{
 
+				
 				Page.cmd("OptionalHelpAll", [false, $scope.site_address], (function(_this) {
 				          return function() {
-				            Page.site_info.settings.autodownloadoptional = false;				           
+				            Page.site_info.settings.autodownloadoptional = false;				           				            
 				          };
 				        })(this));
+
 				//Page.cmd("OptionalHelpRemove", ["uploads"]);		
 				$scope.optionalHelp = false;
+
 			}
 			
 			// get sites jsons
