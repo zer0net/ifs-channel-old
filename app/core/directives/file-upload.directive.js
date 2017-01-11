@@ -29,6 +29,7 @@ app.directive('fileUpload', ['$sce',
 				$scope.reader = new FileReader();
 				// reader onload
 				$scope.reader.onload = function(){
+					
 					// apply reader info to scope
 					$scope.file = file;
 					// render file name
@@ -50,18 +51,18 @@ app.directive('fileUpload', ['$sce',
 						$scope.item.media_type = 'game';
 						// item zip file name
 						$scope.item.zip_name = file_name;
-					} else if ($scope.item.file_type === 'nes'){
+					} else if ($scope.item.file_type === 'nes' || $scope.item.file_type === 'dsk'){
 						// item media type
 						$scope.item.media_type = 'game';
 						// item file name						
 						$scope.item.file_name = file_name;
-					} else if ($scope.item.file_type === 'mp4'){
+					} else if ($scope.item.file_type === 'mp4' || $scope.item.file_type === 'ogg' || $scope.item.file_type === 'webm' || $scope.item.file_type === 'ogv'){
 						// item media type
 						$scope.item.media_type = 'video';
 						// item video file name
 						$scope.item.file_name = file_name;
 					}
-					console.log($scope.item.file_type);
+
 					// apply
 					$scope.$apply();
 				};
