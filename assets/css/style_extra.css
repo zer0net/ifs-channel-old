@@ -49,3 +49,10 @@ th {
     margin-bottom: 10px;
     
 }
+
+md-dialog.upload-dialog{   
+    width: 600px;
+    min-width: 600px;
+    height:500px;
+    border-radius: 0;
+}

@@ -1,13 +1,12 @@
 app.directive('fileList', ['$mdDialog','$mdMedia',
 	function($mdDialog,$mdMedia) {
 
-		// game interface controller
+		// interface controller
 		var controller = function($scope,$element) {
 
 			$scope.itemsPerPage = 15;
 			$scope.sortKey = 'file_name';
-			$scope.reverse = false;
-			console.log($scope);
+			$scope.reverse = false;			
 
 			// sort file list
 			$scope.sort = function(keyname){
@@ -28,7 +27,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 		    	var file_name_field;
 		    	if (item.file_type === 'zip'){
 		    		file_name_field = 'zip_name';
-		    	} else if (item.file_type === 'nes'){
+		    	} else {
 		    		file_name_field = 'file_name';
 		    	}
 		    	$scope.deleteItem(item,file_name_field);
@@ -156,6 +155,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 											'<th ng-click="sort(\'x_peer\')">peers<span class="glyphicon sort-icon" ng-show="sortKey==\'x_peer\'" ng-class="{\'glyphicon-chevron-down\':reverse,\'glyphicon-chevron-up\':!reverse}"></span></th>' +
 											'<th ng-click="sort(\'file_size\')">Size<span class="glyphicon sort-icon" ng-show="sortKey==\'file_size\'" ng-class="{\'glyphicon-chevron-down\':reverse,\'glyphicon-chevron-up\':!reverse}"></span></th>' +
 											'<th ng-click="sort(\'media_type\')">Type<span class="glyphicon sort-icon" ng-show="sortKey==\'media_type\'" ng-class="{\'glyphicon-chevron-down\':reverse,\'glyphicon-chevron-up\':!reverse}"></span></th>' +
+											'<th ng-click="sort(\'file_type\')">File <span class="glyphicon sort-icon" ng-show="sortKey==\'file_type\'" ng-class="{\'glyphicon-chevron-down\':reverse,\'glyphicon-chevron-up\':!reverse}"></span></th>' +
 											'<th ng-click="sort(\'date_added\')">Date<span class="glyphicon sort-icon" ng-show="sortKey==\'date_added\'" ng-class="{\'glyphicon-chevron-up\':reverse,\'glyphicon-chevron-down\':!reverse}"></span></th>' +
 											'<th ng-if="owner">Action</th>' +
 										'</tr>' +
@@ -166,6 +166,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 										'<td><span ng-if="item.x_peer" >{{item.x_peer}}</span> </td>' +
 								    	'<td>{{item.file_size|filesize}}</td>' +
 								    	'<td>{{item.media_type}}</td>' +
+								    	'<td>{{item.file_type}}</td>' +
 										'<td><i am-time-ago="item.date_added"></i></td>' +
 										'<td ng-if="owner">' +
 											'<span ng-click="deleteFile(item)" class="glyphicon glyphicon-trash"></span>' +

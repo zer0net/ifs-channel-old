@@ -4,6 +4,17 @@ app.directive('multipleFilesUpload', ['$location',
 		// image upload controller
 		var controller = function($scope,$element) {
 
+			// loading & msg
+			$scope.showUploadImg = function(){				
+				$scope.uploading = true;
+			};
+
+			// finish loading
+			$scope.finishUploadImg = function(){
+				$scope.uploading = false;
+			};
+
+
 			$scope.init = function(chJson){
 				$scope.chJson = chJson;				
 				// items upload config
@@ -63,8 +74,8 @@ app.directive('multipleFilesUpload', ['$location',
 
 			
 			// upload single file
-			$scope.uploadFile = function(file){
-				console.log(file);
+			$scope.uploadFile = function(file){		
+				
 				if ($scope.ifFileExist(file)) {
 					file.state = 'existing';
 					$scope.uploadNextFile();
@@ -120,7 +131,7 @@ app.directive('multipleFilesUpload', ['$location',
 						next_item_id = $scope.chJson.next_item_id;
 					}
 					item[item_id_name] = next_item_id;
-					console.log(item);
+					
 					// write to file
 					Page.cmd("fileWrite",[item.path, file.data.split('base64,')[1]], function(res) {
 						$scope.$apply(function(){
@@ -132,6 +143,7 @@ app.directive('multipleFilesUpload', ['$location',
 							var media_type = item.media_type + 's';
 							if (!$scope.chJson[media_type]){$scope.chJson[media_type] = [];}
 							$scope.chJson[media_type].push(item);
+							
 							// upload next file
 							$scope.uploadNextFile();
 						});
@@ -155,13 +167,16 @@ app.directive('multipleFilesUpload', ['$location',
 			
 		};
 
+
+
 		var template = '<md-content id="multiple-files-upload">' +
-							'<button style="width:400px;height:100px;" dropzone="itemsUploadConfig" ng-hide="files" multiple>upload files</button>' +
+
+							'<button style="width:500px;height:300px;" dropzone="itemsUploadConfig" ng-hide="files" multiple>upload files</button>' +
 							'<ul ng-show="files">'+
 								'<li ng-repeat="file in files" layout="row">' +
 									'<span flex="60" ng-bind="file.name"></span>' +
 									'<span flex="20">{{file.size|filesize}}</span>' +
-									'<span flex="20">{{file.state}}</span>' +
+									'<span flex="20">{{file.state}}<md-progress-circular ng-if="file.state==\'uploading\'" md-diameter="20px" style="float:left;width: 20px; height: 20px;" md-mode="indeterminate"></md-progress-circular></span>' +									
 								'</li>' +
 							'</ul>' +
 	            			'<md-button flex="100" style="margin: 16px 0;" class="md-primary md-raised edgePadding pull-right" ng-click="uploadFiles()">' +

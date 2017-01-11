@@ -55,6 +55,39 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 
 			};
 
+			// multiple upload dialog
+			$scope.multipleUploadDialog = function(ev){
+				
+				$scope.status = '';
+				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			    var dialogTemplate = '<md-dialog aria-label="Multiple File Upload" class="upload-dialog">' +
+									    '<md-toolbar>' +
+									    	'<div class="md-toolbar-tools">' +
+										        '<h2>Upload Files</h2>' +
+									    	'</div>' +
+									    '</md-toolbar>' +
+									    '<md-dialog-content layout-padding>' +
+											'<multiple-files-upload ng-init="init(items.chJson)"></multiple-files-upload>'
+									    '</md-dialog-content>' +
+									'</md-dialog>';
+
+			    $mdDialog.show({
+					controller: DialogController,
+					template: dialogTemplate,
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:true,
+					fullscreen: useFullScreen,
+					locals: {
+						items: {
+							chJson:$scope.chJson
+						}
+					}
+			    });
+
+			};
+
 			// open edit channel dialog
 			$scope.openChannelEditDialog = function(ev) {
 
@@ -170,7 +203,7 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 							'<md-button ng-if="optionalHelp==false" class="md-primary md-raised edgePadding pull-left" ng-click="onOptionalHelp()"> distribute all files</md-button>' + 				       							
 							'<md-button ng-if="optionalHelp==true" class="md-primary md-raised edgePadding pull-left" ng-click="onRemoveOptionalHelp()">stop distribute all files</md-button>' + 				       							
 		        	'</li>' + 			
-		        	'<li  ng-if="owner" file-browser>' + 						
+		        	'<li  ng-if="owner">' + 						
 							'<md-button class="md-primary md-raised edgePadding pull-left" ng-click="multipleUploadDialog($event)">Upload</md-button>' + 				       
 		        	'</li>' + 		        	
 					'<li ng-if="owner">' + 
