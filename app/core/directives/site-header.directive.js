@@ -11,6 +11,38 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 		    	$rootScope.$broadcast('onCheckFolder');
 		    };
 
+			// multiple upload dialog
+			$scope.multipleUploadDialog = function(ev){
+				$scope.status = '';
+				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			    var dialogTemplate = '<md-dialog aria-label="Multiple File Upload">' +
+									    '<md-toolbar>' +
+									    	'<div class="md-toolbar-tools">' +
+										        '<h2>Upload Files</h2>' +
+									    	'</div>' +
+									    '</md-toolbar>' +
+									    '<md-dialog-content layout-padding>' +
+											'<multiple-files-upload ng-init="init(items.chJson)"></multiple-files-upload>'
+									    '</md-dialog-content>' +
+									'</md-dialog>';
+
+			    $mdDialog.show({
+					controller: DialogController,
+					template: dialogTemplate,
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:true,
+					fullscreen: useFullScreen,
+					locals: {
+						items: {
+							chJson:$scope.chJson
+						}
+					}
+			    });
+
+			};
+
 		    // open help dialog
 			$scope.openHelpDialog = function(ev) {
 
