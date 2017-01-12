@@ -40,7 +40,7 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 				// get site info
 				Page.cmd("siteInfo", {}, function(site_info) {
 					// site info
-					console.log(site_info);
+					
 					Page.site_info = site_info;
 					
 					$scope.site_address = site_info.address;
@@ -51,7 +51,8 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					
 					$scope.settings = Page.site_info.settings;	
 
-					$scope.optionalHelp=site_info.settings.autodownloadoptional;
+					$scope.optionalHelp=false;
+					if(site_info.settings.autodownloadoptional) $scope.optionalHelp=site_info.settings.autodownloadoptional;
 					
 
 					// apply to scope
@@ -71,25 +72,28 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 			};
 
 			$scope.onOptionalHelp = function()
-			{
-				Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
-				          return function() {
-				            Page.site_info.settings.autodownloadoptional = true;				           
-				          };
-				        })(this));
-				//Page.cmd("optionalHelp", ["uploads", "All files"]);	
+			{				
 				$scope.optionalHelp = true;	
+				 return Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
+		          return function() {
+		            Page.site_info.settings.autodownloadoptional =true;
+		            return true;
+		          };
+		        })(this));
 			}
 			$scope.onRemoveOptionalHelp = function()
 			{
 
+				
 				Page.cmd("OptionalHelpAll", [false, $scope.site_address], (function(_this) {
 				          return function() {
-				            Page.site_info.settings.autodownloadoptional = false;				           
+				            Page.site_info.settings.autodownloadoptional = false;				           				            
 				          };
 				        })(this));
+
 				//Page.cmd("OptionalHelpRemove", ["uploads"]);		
 				$scope.optionalHelp = false;
+
 			}
 			
 			// get sites jsons
