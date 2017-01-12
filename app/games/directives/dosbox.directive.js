@@ -13,8 +13,8 @@ app.directive('dosbox', ['$location','$rootScope',
 				var zipFile;
 				if ($scope.mode === 'create'){
 					zipFile = item.file;
-				} else if ($scope.mode === 'edit'){
-					zipFile = "/"+$scope.site_address+"/uploads/games/"+$scope.item.zip_name;
+				} else {
+					zipFile = "/"+Page.site_info.address+"/uploads/games/"+$scope.item.zip_name;
 				}
 				// dosbox config
 				var dosbox = new Dosbox({
@@ -56,6 +56,7 @@ app.directive('dosbox', ['$location','$rootScope',
 
 		var template = 				
 		'<div id="dosbox-section" class="{{dosboxSize}} md-whiteframe-1dp">' +
+			'<script type="text/javascript" src="assets/lib/games/js-dos/js-dos.js"></script>' +
 			'<style type="text/css">' +
 				'.dosbox-overlay {background-image: url("{{item.imgPath}}");}' +
 			'</style>' +

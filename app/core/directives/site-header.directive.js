@@ -4,45 +4,6 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 		// site header controller
 		var controller = function($scope,$element) {
 
-
-
-		    // check folder
-		    $scope.checkFolder = function(){
-		    	$rootScope.$broadcast('onCheckFolder');
-		    };
-
-			// multiple upload dialog
-			$scope.multipleUploadDialog = function(ev){
-				$scope.status = '';
-				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-			    var dialogTemplate = '<md-dialog aria-label="Multiple File Upload">' +
-									    '<md-toolbar>' +
-									    	'<div class="md-toolbar-tools">' +
-										        '<h2>Upload Files</h2>' +
-									    	'</div>' +
-									    '</md-toolbar>' +
-									    '<md-dialog-content layout-padding>' +
-											'<multiple-files-upload ng-init="init(items.chJson)"></multiple-files-upload>'
-									    '</md-dialog-content>' +
-									'</md-dialog>';
-
-			    $mdDialog.show({
-					controller: DialogController,
-					template: dialogTemplate,
-					parent: angular.element(document.body),
-					targetEvent: ev,
-					clickOutsideToClose:true,
-					fullscreen: useFullScreen,
-					locals: {
-						items: {
-							chJson:$scope.chJson
-						}
-					}
-			    });
-
-			};
-
 		    // open help dialog
 			$scope.openHelpDialog = function(ev) {
 
@@ -205,16 +166,16 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 
 		// site header template
 		var template = 	
-		'<md-toolbar layout-padding class="md-hue-2 header" layout="row">' + 			
+		'<md-toolbar ng-show="chJson" layout-padding class="md-hue-2 header" layout="row">' + 			
 			'<div class="col-xs-5">' + 
 				/*'<img ng-src="uploads/images/{{chJson.channel.img ? chJson.channel.img : \'x-avatar.png\'}}" class="imgFilehubLogo"/>'+				*/
 				'<img ng-src="{{chJson.channel.img ? \'uploads/images/\'+chJson.channel.img : \'assets/img/x-avatar.png\'}}" class="imgFilehubLogo"/>'+				
 
 
 				'<h3><a href="/{{master_address}}">{{master_name}}</a></h3>' + 
-				'<div class="site-title" ng-show="chJson">' + 
+				'<div class="site-title">' + 
 					'<h3>' + 
-						'<a href="/{{site_address}}">File Hub : {{chJson.channel.name}} </a>' + 
+						'<a href="/{{site_address}}">File Hub : {{contentJson.title}} </a>' + 
 						'<small ng-if="owner">' + 
 							'<a ng- ng-click="openChannelEditDialog(chJson)">' + 
 								'<span class="glyphicon glyphicon-pencil"></span>' + 
@@ -222,7 +183,7 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 						'</small>' + 
 					'</h3>' + 
 					'<div class="sub-title">' + 
-						'<small>{{chJson.channel.description}}</small>' + 
+						'<small>{{contentJson.description}}</small>' + 
 						'<small>Site : &nbsp;{{peers}} peers' +
 						' &nbsp; • &nbsp; Files &nbsp;  {{optionalFileList.length}} / {{fileTotalLength}} &nbsp;• &nbsp; Size : &nbsp;{{settings.optional_downloaded|filesize}} / {{settings.size_optional|filesize}} Total' +
 						'</small>' + 
