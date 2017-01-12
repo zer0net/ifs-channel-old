@@ -27,6 +27,11 @@ app.directive('dosbox', ['$location','$rootScope',
 						dosbox.run(zipFile, "./"+$scope.item.file_name);
 					}
 				});
+				$timeout(function () {
+					// run dosbox
+					console.log(dosbox);
+					dosbox.ui.start[0].click();
+				});
 			};
 
 			// toggle full screen
