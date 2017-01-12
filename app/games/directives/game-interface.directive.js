@@ -61,10 +61,6 @@ app.directive('gameInterface', [
 
 				// determine game type acording to file type
 				if ($scope.item.file_type === 'zip'){
-
-					// game type
-					$scope.game_type = 'DOS';
-
 					// executable file input
 					var exeField = {
 						label:'Executable File Name',
@@ -72,20 +68,14 @@ app.directive('gameInterface', [
 						model:'file_name',
 						flex:'100'
 					};
-					
 					// executable file list
 					var exeFileSelection = {
 						type:'zip-contents',
 						flex:'100'
 					};
-
 					// push to form fields array
 					$scope.formTabs[0].sections[0].fields.push(exeField);
 					$scope.formTabs[0].sections[0].fields.push(exeFileSelection);
-
-				} else if ($scope.item.file_type === 'nes'){
-					$scope.game_type = 'NES';
-					if ($scope.mode === 'create') $scope.renderItem();
 				}
 			};
 
@@ -96,12 +86,18 @@ app.directive('gameInterface', [
 							'<item-form ng-if="formTabs"></item-form>' +
 							'<!-- /form -->' +
 							'<!-- player -->' +
-							'<div id="dosbox-container" ng-show="game_type === \'DOS\'">' +
+							'<div id="dosbox-container" ng-show="item.file_type === \'zip\'">' +
 								'<dosbox ng-init="initDosBox(item)"></dosbox>' +
 							'</div>' +
-							'<div id="nes-container" ng-show="game_type === \'NES\'">' +
+							'<div id="nes-container" ng-show="item.file_type === \'nes\'">' +
 								'<nes-emulator ng-init="initNesEmulator(item)"></nes-emulator>' +
-							'</div>' +							
+							'</div>' +
+							'<div id="atari-container" ng-show="item.file_type === \'bin\'">' +
+								'<atari-emulator style="margin:0 auto;" ng-init="initAtariEmulator(item)"></atari-emulator>' +
+							'</div>' +
+							'<div id="cpc-container" ng-show="item.file_type === \'sna\'">' +
+								'<cpc-emulator ng-init="initCpcEmulator(item)"></cpc-emulator>' +
+							'</div>' +																	
 							'<!-- /player -->' +
 						'</div>';
 

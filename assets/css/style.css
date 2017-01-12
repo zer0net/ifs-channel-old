@@ -1099,6 +1099,9 @@ md-dialog.upload-dialog #multiple-files-upload ul li span {
 #nes-emulator-container #emulator #nes-controls {
   margin-bottom: 5px;
 }
+#atari-container #javatari-screen {
+  margin: 10px auto;
+}
 /* /EMULATORS */
 /* STYLE EXTRA */
 md-content.md-default-theme,
