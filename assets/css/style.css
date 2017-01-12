@@ -429,6 +429,9 @@ md-dialog.upload-dialog {
   height: auto;
   border-radius: 0;
 }
+md-dialog.upload-dialog #multiple-files-upload {
+  padding: 0;
+}
 md-dialog.upload-dialog #multiple-files-upload ul {
   padding: 0;
 }
@@ -437,6 +440,11 @@ md-dialog.upload-dialog #multiple-files-upload ul li.list-header {
   margin: 0 0 5px 0;
   border-bottom: 1px solid #ccc;
   font-weight: bold;
+}
+md-dialog.upload-dialog #multiple-files-upload ul li span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* /MULTIPLE FILE UPLOAD */
 /* FILE LIST */

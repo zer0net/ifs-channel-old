@@ -513,7 +513,7 @@
 	    border-radius: 0;
 
 		#multiple-files-upload {
-
+			padding: 0;
 			ul {
 				padding: 0;
 
@@ -522,6 +522,14 @@
 				    margin: 0 0 5px 0;
 				    border-bottom: 1px solid #ccc;
 				    font-weight: bold;
+				}
+
+				li {
+					span {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;				
+					}
 				}
 			}
 		}

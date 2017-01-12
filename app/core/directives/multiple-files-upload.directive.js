@@ -60,11 +60,14 @@ app.directive('multipleFilesUpload', ['$location',
 						    return [text.slice(0, index), text.slice(index + 1)]
 						}
 						file.file_type = splitByLastDot(file.name)[1];
+						// name
+						file.f_name = file.name.split('.'+file.file_type)[0];
 						// files array
 						if (!$scope.files) $scope.files = [];
 						// push file to files array
 						$scope.files.push(file);
 						// apply to scope
+						console.log(file);
 						$scope.$apply();
 					};
 					// reader read file
@@ -79,7 +82,7 @@ app.directive('multipleFilesUpload', ['$location',
 			};
 
 			
-			// upload single file
+			// upload  file
 			$scope.uploadFile = function(file){		
 				
 				if ($scope.ifFileExist(file)) {
@@ -89,12 +92,12 @@ app.directive('multipleFilesUpload', ['$location',
 					// file state
 					file.state = 'uploading';
 					// render file name
-					var file_name = file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss").split('.' + file_type)[0].replace(/[^\w\s]/gi, '_') + '.' + file_type;
+					var file_name = file.name.split(' ').join('_').normalize('NFKD').replace(/[\u0300-\u036F]/g, '').replace(/ß/g,"ss").split('.' + file.file_type)[0].replace(/[^\w\s]/gi, '_') + '.' + file.file_type;
 					// item obj
 					var item = {
 						"file_type":file.file_type,
 						"channel": $location.$$absUrl.split('0/')[1].split('/')[0],
-						"title": file.name.split('.'+file_type)[0],
+						"title": file.name.split('.'+file.file_type)[0],
 						"date_added": +(new Date),
 						"published":false
 					};
@@ -102,19 +105,19 @@ app.directive('multipleFilesUpload', ['$location',
 					// render item
 					var item_id_name;
 					var item_file_name;
-					if (file_type === 'zip' || file_type === 'nes' || file_type === 'sna' || file_type === 'dsk' || file_type === 'bin') {
+					if (file.file_type === 'zip' || file.file_type === 'nes' || file.file_type === 'sna' || file.file_type === 'dsk' || file.file_type === 'bin') {
 						item_id_name = 'game_id';
 						item.file_size = file.size;
 						item.media_type = 'game';
 						item.path = 'uploads/games/'+file_name;
-						if (file_type === 'zip'){
+						if (file.file_type === 'zip'){
 							item.file_name = file_name;
 							item.zip_size = file.size;
 							item_file_name = 'zip_name';							
 						} else {
 							item_file_name = 'file_name';
 						}
-					} else if (file_type === 'mp4' || file_type === 'ogg' || file_type === 'webm' || file_type === 'ogv') {
+					} else if (file.file_type === 'mp4' || file.file_type === 'ogg' || file.file_type === 'webm' || file.file_type === 'ogv') {
 						item_id_name = 'video_id';
 						item.file_size = file.size;
 						item.media_type = 'video';
@@ -148,11 +151,7 @@ app.directive('multipleFilesUpload', ['$location',
 							$scope.uploadNextFile();
 						});
 					});
-				}
-				
-				
-
-		    	
+				}	
 			};
 			
 			// upload next file
@@ -169,21 +168,21 @@ app.directive('multipleFilesUpload', ['$location',
 
 
 
-		var template = '<md-content id="multiple-files-upload">' +
-
+		var template = '<div id="multiple-files-upload">' +
 							'<button style="width:100%;height:100px;" dropzone="itemsUploadConfig" ng-hide="files" multiple>Click here to upload OR Drag & drop files</button>' +
 							'<ul ng-show="files">'+
-								'<li class="list-header" layout="row"><span flex="70">File</span><span flex="15">Size</span><span flex="15">State</span>' +
+								'<li class="list-header" layout="row"><span flex="70">File</span><span flex="10">Type</span><span flex="15">Size</span><span flex="15">State</span>' +
 								'<li ng-repeat="file in files" layout="row">' +
-									'<span flex="70" ng-bind="file.name"></span>' +
+									'<span flex="70" ng-bind="file.f_name"></span>' +
+									'<span flex="10" ng-bind="file.file_type"></span>' +
 									'<span flex="15">{{file.size|filesize}}</span>' +
-									'<span flex="15">{{file.state}}<md-progress-circular ng-if="file.state==\'uploading\'" md-diameter="20px" style="float:left;width: 20px; height: 20px;" md-mode="indeterminate"></md-progress-circular></span>' +									
+									'<span flex="15" ng-bind="file.state"><md-progress-circular ng-if="file.state==\'uploading\'" md-diameter="20px" style="float:left;width: 20px; height: 20px;" md-mode="indeterminate"></md-progress-circular></span>' +									
 								'</li>' +
 							'</ul>' +
-	            			'<md-button ng-if="files" flex="100" style="margin: 16px 0; width:100%;" class="md-primary md-raised edgePadding pull-right" ng-click="uploadFiles()">' +
+	            			'<md-button ng-if="files" flex="100" style="margin: 16px 0 0 0; width:100%;" class="md-primary md-raised edgePadding pull-right" ng-click="uploadFiles()">' +
 	            				'<label>Upload files</label>' +
 	            			'</md-button>'
-						'</md-content>';
+						'</div>';
 
 		return {
 			restrict: 'AE',

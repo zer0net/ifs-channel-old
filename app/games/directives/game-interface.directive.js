@@ -58,52 +58,35 @@ app.directive('gameInterface', [
 						}]
 					}
 				];
+
 				// determine game type acording to file type
 				if ($scope.item.file_type === 'zip'){
+
+					// game type
 					$scope.game_type = 'DOS';
+
+					// executable file input
 					var exeField = {
 						label:'Executable File Name',
 						type:'executable-file',
 						model:'file_name',
 						flex:'100'
 					};
-					$scope.formTabs[0].sections[0].fields.push(exeField)
-					// if mode is create
-					if ($scope.mode === 'create'){
-						$scope.readZipFile();
-					}
+					
+					// executable file list
+					var exeFileSelection = {
+						type:'zip-contents',
+						flex:'100'
+					};
+
+					// push to form fields array
+					$scope.formTabs[0].sections[0].fields.push(exeField);
+					$scope.formTabs[0].sections[0].fields.push(exeFileSelection);
+
 				} else if ($scope.item.file_type === 'nes'){
 					$scope.game_type = 'NES';
 					if ($scope.mode === 'create') $scope.renderItem();
 				}
-			};
-
-			// read zip file
-			$scope.readZipFile = function(){
-				console.log('read zip file');				
-				// loading
-				$scope.showLoadingMsg('reading zip file');
-				// js zip instance
-				var zip = new JSZip();
-				// item zip file size
-				$scope.item.zip_size = $scope.file.size;
-				// js zip - loop through files in zip in file
-				zip.loadAsync($scope.file).then(function(zip) { 
-					// for every file in zip
-					for (var i in zip.files){ var file = zip.files[i];
-						// if file is .com / .exe
-						if (file.name.indexOf(".COM") > -1 || 
-							file.name.indexOf(".EXE") > -1 || 
-							file.name.indexOf(".com") > -1 ||
-							file.name.indexOf(".exe") > -1){
-							// apply to item as file_name
-							$scope.item.file_name = file.name;
-						}
-					}
-					// render item (item-create.direcrtive.js)
-					$scope.$apply();					
-					if ($scope.mode === 'create') $scope.renderItem();
-				});
 			};
 
 		};
