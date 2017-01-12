@@ -4,13 +4,6 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 		// site header controller
 		var controller = function($scope,$element) {
 
-
-
-		    // check folder
-		    $scope.checkFolder = function(){
-		    	$rootScope.$broadcast('onCheckFolder');
-		    };
-
 		    // open help dialog
 			$scope.openHelpDialog = function(ev) {
 
@@ -173,16 +166,14 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 
 		// site header template
 		var template = 	
-		'<md-toolbar layout-padding class="md-hue-2 header" layout="row">' + 			
+		'<md-toolbar ng-show="chJson" layout-padding class="md-hue-2 header" layout="row">' + 			
 			'<div class="col-xs-5">' + 
-				/*'<img ng-src="uploads/images/{{chJson.channel.img ? chJson.channel.img : \'x-avatar.png\'}}" class="imgFilehubLogo"/>'+				*/
-				'<img ng-src="{{chJson.channel.img ? \'uploads/images/\'+chJson.channel.img : \'assets/img/x-avatar.png\'}}" class="imgFilehubLogo"/>'+				
-
-
+				/*'<img ng-src="uploads/images/{{chJson.channel.img ? chJson.channel.img : \'x-avatar.png\'}}" class="imgFilehubLogo"/>'+ */
+				'<img ng-src="{{chJson.channel.img ? \'uploads/images/\'+chJson.channel.img : \'assets/img/x-avatar.png\'}}" class="imgFilehubLogo"/>' +
 				'<h3><a href="/{{master_address}}">{{master_name}}</a></h3>' + 
-				'<div class="site-title" ng-show="chJson">' + 
+				'<div class="site-title">' + 
 					'<h3>' + 
-						'<a href="/{{site_address}}">File Hub : {{chJson.channel.name}} </a>' + 
+						'<a href="/{{site_address}}">File Hub : {{contentJson.title}} </a>' + 
 						'<small ng-if="owner">' + 
 							'<a ng- ng-click="openChannelEditDialog(chJson)">' + 
 								'<span class="glyphicon glyphicon-pencil"></span>' + 
@@ -190,7 +181,7 @@ app.directive('siteHeader', ['$rootScope','$location','$mdDialog','$mdMedia',
 						'</small>' + 
 					'</h3>' + 
 					'<div class="sub-title">' + 
-						'<small>{{chJson.channel.description}}</small>' + 
+						'<small>{{contentJson.description}}</small>' + 
 						'<small>Site : &nbsp;{{peers}} peers' +
 						' &nbsp; • &nbsp; Files &nbsp;  {{optionalFileList.length}} / {{fileTotalLength}} &nbsp;• &nbsp; Size : &nbsp;{{settings.optional_downloaded|filesize}} / {{settings.size_optional|filesize}} Total' +
 						'</small>' + 

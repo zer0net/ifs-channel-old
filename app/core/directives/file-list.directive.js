@@ -33,7 +33,23 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 		    	$scope.deleteItem(item,file_name_field);
 		    };
 
-		    // game preview dialog
+		    // item preview dialog
+		    $scope.itemPreviewDialog = function(ev,item){
+		    	console.log(item);
+		    	if (item.media_type === 'game'){
+			    	if (item.file_type === 'zip'){
+			    		$scope.dosPreviewDialog(ev,item);
+			    	} else if (item.file_type === 'nes'){
+			    		$scope.nesPreviewDialog(ev,item);
+			    	} else if (item.file_type === 'bin'){
+			    		$scope.atariPreviewDialog(ev,item);
+			    	} else if (item.file_type === 'sna'){
+			    		$scope.cpcPreviewDialog(ev,item);
+			    	}
+		    	}
+		    };
+
+		    // dos preview dialog
 			$scope.dosPreviewDialog = function(ev,item) {
 
 				$scope.status = '';
@@ -69,7 +85,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 
 			};
 
-		    // game preview dialog
+		    // nes preview dialog
 			$scope.nesPreviewDialog = function(ev,item) {
 
 				$scope.status = '';
@@ -83,7 +99,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									    	'</div>' +
 									    '</md-toolbar>' +
 									    '<md-dialog-content layout-padding>' +
-											'<md-content id="nes-emulator-dialog-contaner" style="width:700px;">' +
+											'<md-content id="nes-emulator-dialog-contaner" style="width:512px;padding:0">' +
 												'<nes-emulator ng-if="items.item" ng-init="initNesEmulator(items.item)"></nes-emulator>' +
 											'</md-content>' +
 									    '</md-dialog-content>' +
@@ -97,12 +113,91 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 					clickOutsideToClose:true,
 					fullscreen: useFullScreen,	
 					onRemoving:function(){		
-
-						if($scope.nes.isRunning)
-						{
+						if($scope.nes.isRunning) {
 							$scope.nes.stop();	
 						}
-							
+					},
+					locals: {
+						items: {
+							item:item
+						}
+					}
+			    });
+
+			};
+
+		    // atari preview dialog
+			$scope.atariPreviewDialog = function(ev,item) {
+
+				$scope.status = '';
+				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+
+			    var dialogTemplate = '<md-dialog aria-label="{{items.item.title}}">' +
+									    '<md-toolbar>' +
+									    	'<div class="md-toolbar-tools">' +
+										        '<h2>{{items.item.title}}</h2>' +
+									    	'</div>' +
+									    '</md-toolbar>' +
+									    '<md-dialog-content layout-padding>' +
+											'<md-content id="nes-emulator-dialog-contaner" style="width:640px;padding:0">' +
+												'<atari-emulator ng-if="items.item" ng-init="initAtariEmulator(items.item)"></atari-emulator>' +
+											'</md-content>' +
+									    '</md-dialog-content>' +
+									  '</md-dialog>';
+
+			    $mdDialog.show({
+					controller: DialogController,
+					template: dialogTemplate,
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:true,
+					fullscreen: useFullScreen,	
+					onRemoving:function(){		
+						if($scope.nes.isRunning) {
+							$scope.nes.stop();	
+						}
+					},
+					locals: {
+						items: {
+							item:item
+						}
+					}
+			    });
+
+			};
+
+		    // atari preview dialog
+			$scope.cpcPreviewDialog = function(ev,item) {
+
+				$scope.status = '';
+				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+
+			    var dialogTemplate = '<md-dialog aria-label="{{items.item.title}}">' +
+									    '<md-toolbar>' +
+									    	'<div class="md-toolbar-tools">' +
+										        '<h2>{{items.item.title}}</h2>' +
+									    	'</div>' +
+									    '</md-toolbar>' +
+									    '<md-dialog-content layout-padding>' +
+											'<md-content id="nes-emulator-dialog-contaner" style="width:768px;padding:0">' +
+												'<cpc-emulator ng-if="items.item" ng-init="initCpcEmulator(items.item)"></cpc-emulator>' +
+											'</md-content>' +
+									    '</md-dialog-content>' +
+									  '</md-dialog>';
+
+			    $mdDialog.show({
+					controller: DialogController,
+					template: dialogTemplate,
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:true,
+					fullscreen: useFullScreen,	
+					onRemoving:function(){		
+						if($scope.nes.isRunning) {
+							$scope.nes.stop();	
+						}
 					},
 					locals: {
 						items: {
@@ -133,6 +228,22 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 				$mdDialog.hide(answer);
 			};
 
+		    // load script dynamically
+			$scope.loadScript = function(url, type, charset) {
+			    if (type===undefined) type = 'text/javascript';
+			    if (url) {
+		            var body = angular.element(document.getElementsByTagName("body"));
+	                if (body) {
+	                    script = document.createElement('script');
+	                    script.setAttribute('src', url);
+	                    script.setAttribute('type', type);
+	                    if (charset) script.setAttribute('charset', charset);
+	                    body.append(script);
+	                }
+			        return script;
+			    }
+			};
+
 		};
 
 			var template=  '<div class="container-fluid" id="file-list">' +
@@ -140,8 +251,8 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									'<div class="form-group" id="file-search-form">' +
 										'<input id="searchfield" type="text" ng-model="query" class="form-control" placeholder="Search"> ' +
 										'[{{(games|filter:query).length}}] Items Per Page :' +
-										'<span  class="btn btn-primary" ng-click="itemsPerPage=10">10</span>' +
-										'<span  class="btn btn-primary" ng-click="itemsPerPage=15">15</span>' +
+										'<span class="btn btn-primary" ng-click="itemsPerPage=10">10</span>' +
+										'<span class="btn btn-primary" ng-click="itemsPerPage=15">15</span>' +
 										'<span class="btn btn-primary" ng-click="itemsPerPage=20">20</span>' +
 										'<span class="btn btn-primary" ng-click="itemsPerPage=50">50</span> ' +
 									'</div> ' +
@@ -161,7 +272,8 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 										'</tr>' +
 									'</thead>' +
 									'<tr dir-paginate="item in games|orderBy:sortKey:reverse|filter:query |itemsPerPage:itemsPerPage track by $index">' +
-										'<td ng-click="nesPreviewDialog($event,item)" >{{item.file_name}}</td>' +
+										'<td ng-if="item.file_type === \'zip\'" ng-click="itemPreviewDialog($event,item)">{{item.zip_name}}</td>' +
+										'<td ng-if="item.file_type !== \'zip\'" ng-click="itemPreviewDialog($event,item)">{{item.file_name}}</td>' +
 										'<td><span ng-if="item.x_is_load" style="color:green">\u2713</span></td>' +
 										'<td><span ng-if="item.x_peer" >{{item.x_peer}}</span> </td>' +
 								    	'<td>{{item.file_size|filesize}}</td>' +

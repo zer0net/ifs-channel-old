@@ -84,6 +84,16 @@ app.directive('nesEmulator', ['$location','$rootScope',
 							        '</tr>' +
 							    '</table>' +
 						    '</div>' +
+							'<script src="assets/lib/games/nes/lib/dynamicaudio-min.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/nes.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/utils.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/cpu.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/keyboard.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/mappers.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/papu.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/ppu.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/rom.js" type="text/javascript" charset="utf-8"></script>' +
+							'<script src="assets/lib/games/nes/ui.js" type="text/javascript" charset="utf-8"></script>' +						    
 						'</center>';
 
 		return {

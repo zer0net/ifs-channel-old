@@ -4,33 +4,13 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 		/** CONFIG **/
 		
 			//$scope.site_address = $location.$$absUrl.split('0/')[1].split('/')[0];			
+			//$scope.site_address = '1Nrpa9niDCoY9wpJ5s4AEeoMjj1Bi6RhG6';
 			$scope.master_address = '12MVkvYGcRW6u2NYbpfwVad1oQeyG4s9Er';			
 			$scope.master_name = 'IFS';
 			$scope.inner_path =  'data/channel.json';
 			$scope.media_type = 'games';
-			//$scope.site_address = '1Nrpa9niDCoY9wpJ5s4AEeoMjj1Bi6RhG6';
 
 		/** /CONFIG **/
-
-		/** UI **/
-
-		    // select user
-		    $scope.selectUser = function(){
-		    	Page.cmd("certSelect", [["zeroid.bit"]]);
-		    };
-
-			// loading & msg
-			$scope.showLoadingMsg = function(msg){
-				$scope.msg = msg;
-				$scope.loading = true;
-			};
-
-			// finish loading
-			$scope.finishLoading = function(){
-				$scope.loading = false;
-			};
-
-		/** /UI **/
 
 		/** INIT **/
 
@@ -40,21 +20,18 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 				// get site info
 				Page.cmd("siteInfo", {}, function(site_info) {
 					// site info
-					
 					Page.site_info = site_info;
-					
+					// site address
 					$scope.site_address = site_info.address;
 					// peers
 					$scope.peers = Page.site_info.settings.peers;
 					// user is owner
 					$scope.owner = Page.site_info.settings.own;
-					
+					// settings
 					$scope.settings = Page.site_info.settings;	
-
-					$scope.optionalHelp=false;
-					if(site_info.settings.autodownloadoptional) $scope.optionalHelp=site_info.settings.autodownloadoptional;
-					
-
+					// optional help
+					$scope.optionalHelp = false;
+					if(site_info.settings.autodownloadoptional) $scope.optionalHelp = site_info.settings.autodownloadoptional;
 					// apply to scope
 					$scope.$apply(function(){
 						// get jsons
@@ -62,17 +39,15 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					});
 				});
 
-				Page.cmd("optionalFileList", {
-				        address: $scope.site_address,
-				        limit:2000
-				      },function(site_files){				      						      		
-				      		$scope.optionalFileList = site_files;					      		
-				      });	
+				// optional file list
+				Page.cmd("optionalFileList", { address: $scope.site_address, limit:2000 }, function(site_files){				      						      		
+					$scope.optionalFileList = site_files;					      		
+				});	
 				
 			};
 
-			$scope.onOptionalHelp = function()
-			{				
+			// on optional help
+			$scope.onOptionalHelp = function() {				
 				$scope.optionalHelp = true;	
 				 return Page.cmd("OptionalHelpAll", [true, $scope.site_address], (function(_this) {
 		          return function() {
@@ -80,10 +55,10 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 		            return true;
 		          };
 		        })(this));
-			}
-			$scope.onRemoveOptionalHelp = function()
-			{
+			};
 
+			// on remove optional help
+			$scope.onRemoveOptionalHelp = function() {
 				
 				Page.cmd("OptionalHelpAll", [false, $scope.site_address], (function(_this) {
 				          return function() {
@@ -220,6 +195,43 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 			});
 
 		/** /UPDATE CHANNEL **/
+
+
+		/** UI **/
+
+		    // select user
+		    $scope.selectUser = function(){
+		    	Page.cmd("certSelect", [["zeroid.bit"]]);
+		    };
+
+			// loading & msg
+			$scope.showLoadingMsg = function(msg){
+				$scope.msg = msg;
+				$scope.loading = true;
+			};
+
+			// finish loading
+			$scope.finishLoading = function(){
+				$scope.loading = false;
+			};
+
+		    // load script dynamically
+			$scope.loadScript = function(url, type, charset) {
+			    if (type===undefined) type = 'text/javascript';
+			    if (url) {
+		            var body = angular.element(document.getElementsByTagName("body"));
+	                if (body) {
+	                    script = document.createElement('script');
+	                    script.setAttribute('src', url);
+	                    script.setAttribute('type', type);
+	                    if (charset) script.setAttribute('charset', charset);
+	                    body.append(script);
+	                }
+			        return script;
+			    }
+			};    
+
+		/** /UI **/
 
 	}
 ]);
