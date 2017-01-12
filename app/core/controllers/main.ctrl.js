@@ -198,8 +198,7 @@ app.controller('MainCtrl', ['$scope','$rootScope','$sce','$location','$window',
 					// write to file - content.json
 					Page.cmd("fileWrite", ['content.json',btoa(json_raw)],function(res){
 						// sign & publish
-						Page.cmd("sitePublish",["stored"], function(res){
-							console.log(res);
+						Page.cmd("sitePublish",["stored"], function(res){							
 							if (res === 'ok'){
 								// apply to scope
 								$scope.$apply(function(){
