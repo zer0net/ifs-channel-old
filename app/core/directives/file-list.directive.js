@@ -7,6 +7,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 			$scope.itemsPerPage = 15;
 			$scope.sortKey = 'file_name';
 			$scope.reverse = false;			
+		    $scope.games = $scope.filesTotal;
 
 			// sort file list
 			$scope.sort = function(keyname){
@@ -18,9 +19,6 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 					if ($scope.sortKey=='date_added' || $scope.sortKey=='x_peer'||$scope.sortKey=='x_is_load') $scope.reverse=true; // special case
 				}			
 		    }
-
-		    $scope.games = $scope.filesTotal;
-
 			
 		    // delete File
 		    $scope.deleteFile = function(item){
@@ -46,6 +44,8 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 			    	} else if (item.file_type === 'sna'){
 			    		$scope.cpcPreviewDialog(ev,item);
 			    	}
+		    	} else if (item.media_type === 'video'){
+		    		$scope.videoPreviewDialog(ev,item);
 		    	}
 		    };
 
@@ -63,7 +63,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									    	'</div>' +
 									    '</md-toolbar>' +
 									    '<md-dialog-content layout-padding>' +
-											'<md-content id="dosbox-dialog-contaner" style="width:700px;">' +
+											'<md-content id="dosbox-dialog-container" style="width:700px;">' +
 												'<dosbox ng-if="items.item" ng-init="initDosBox(items.item)"></dosbox>' +
 											'</md-content>' +
 									    '</md-dialog-content>' +
@@ -99,7 +99,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									    	'</div>' +
 									    '</md-toolbar>' +
 									    '<md-dialog-content layout-padding>' +
-											'<md-content id="nes-emulator-dialog-contaner" style="width:512px;padding:0">' +
+											'<md-content id="nes-emulator-dialog-container" style="width:512px;padding:0">' +
 												'<nes-emulator ng-if="items.item" ng-init="initNesEmulator(items.item)"></nes-emulator>' +
 											'</md-content>' +
 									    '</md-dialog-content>' +
@@ -140,7 +140,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									    	'</div>' +
 									    '</md-toolbar>' +
 									    '<md-dialog-content layout-padding>' +
-											'<md-content id="nes-emulator-dialog-contaner" style="width:640px;padding:0">' +
+											'<md-content id="atari-emulator-dialog-container" style="width:640px;padding:0">' +
 												'<atari-emulator ng-if="items.item" ng-init="initAtariEmulator(items.item)"></atari-emulator>' +
 											'</md-content>' +
 									    '</md-dialog-content>' +
@@ -167,7 +167,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 
 			};
 
-		    // atari preview dialog
+		    // cpc preview dialog
 			$scope.cpcPreviewDialog = function(ev,item) {
 
 				$scope.status = '';
@@ -181,7 +181,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 									    	'</div>' +
 									    '</md-toolbar>' +
 									    '<md-dialog-content layout-padding>' +
-											'<md-content id="nes-emulator-dialog-contaner" style="width:768px;padding:0">' +
+											'<md-content id="cpc-emulator-dialog-contanier" style="width:768px;padding:0">' +
 												'<cpc-emulator ng-if="items.item" ng-init="initCpcEmulator(items.item)"></cpc-emulator>' +
 											'</md-content>' +
 									    '</md-dialog-content>' +
@@ -195,9 +195,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 					clickOutsideToClose:true,
 					fullscreen: useFullScreen,	
 					onRemoving:function(){		
-						if($scope.nes.isRunning) {
-							$scope.nes.stop();	
-						}
+
 					},
 					locals: {
 						items: {
@@ -208,6 +206,54 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 
 			};
 
+		    // video preview dialog
+			$scope.videoPreviewDialog = function(ev,item) {
+
+				$scope.status = '';
+				$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+			    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+
+				// video player
+				var player = {
+					autoPlay:true,
+					sources: [
+						{
+							src:'/'+$scope.site_address+'/uploads/videos/'+item.file_name,
+							type:'video/'+item.file_type
+						}
+					],
+					theme: "/" + $scope.site_address + "/assets/lib/videos/videogular-themes-default/videogular.css"
+				};
+
+			    var dialogTemplate = '<md-dialog aria-label="{{items.item.title}}">' +
+									    '<md-toolbar>' +
+									    	'<div class="md-toolbar-tools">' +
+										        '<h2>{{items.item.title}}</h2>' +
+									    	'</div>' +
+									    '</md-toolbar>' +
+									    '<md-dialog-content layout-padding>' +
+											'<md-content id="video-dialog-container" style="width:768px;padding:0">' +
+												'<video-player ng-init="initVideoPlayer(items.player)"></video-player>' +
+											'</md-content>' +
+									    '</md-dialog-content>' +
+									  '</md-dialog>';
+
+			    $mdDialog.show({
+					controller: DialogController,
+					template: dialogTemplate,
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:true,
+					fullscreen: useFullScreen,
+					locals: {
+						items: {
+							item:item,
+							player:player
+						}
+					}
+			    });
+
+			};
 		};
 
 		// dialog controller
@@ -282,7 +328,7 @@ app.directive('fileList', ['$mdDialog','$mdMedia',
 										'<td><i am-time-ago="item.date_added"></i></td>' +
 										'<td ng-if="owner">' +
 											'<span ng-click="deleteFile(item)" class="glyphicon glyphicon-trash"></span>' +
-											'<a href="/{{site_address}}/edit.html?item={{item.game_id}}type=game">' +
+											'<a href="/{{site_address}}/edit.html?item={{item.game_id}}type={{item.media_type}}">' +
 											'<span class="glyphicon glyphicon-pencil"></span></a>' +
 										'</td>' +
 									'</tr>' +

@@ -51,8 +51,6 @@ app.directive('videoInterface', ['$sce',
 					],
 					theme: "/" + $scope.site_address + "/assets/lib/videos/videogular-themes-default/videogular.css"
 				};
-				// render item
-				if ($scope.mode === 'create') $scope.renderItem();
 			};
 
 		};
