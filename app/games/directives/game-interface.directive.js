@@ -86,16 +86,16 @@ app.directive('gameInterface', [
 							'<item-form ng-if="formTabs"></item-form>' +
 							'<!-- /form -->' +
 							'<!-- player -->' +
-							'<div id="dosbox-container" ng-show="item.file_type === \'zip\'">' +
+							'<div id="dosbox-container" ng-if="item.file_type === \'zip\'">' +
 								'<dosbox ng-init="initDosBox(item)"></dosbox>' +
 							'</div>' +
-							'<div id="nes-container" ng-show="item.file_type === \'nes\'">' +
+							'<div id="nes-container" ng-if="item.file_type === \'nes\'">' +
 								'<nes-emulator ng-init="initNesEmulator(item)"></nes-emulator>' +
 							'</div>' +
-							'<div id="atari-container" ng-show="item.file_type === \'bin\'">' +
+							'<div id="atari-container" ng-if="item.file_type === \'bin\'">' +
 								'<atari-emulator style="margin:0 auto;" ng-init="initAtariEmulator(item)"></atari-emulator>' +
 							'</div>' +
-							'<div id="cpc-container" ng-show="item.file_type === \'sna\'">' +
+							'<div id="cpc-container" ng-if="item.file_type === \'sna\'">' +
 								'<cpc-emulator ng-init="initCpcEmulator(item)"></cpc-emulator>' +
 							'</div>' +																	
 							'<!-- /player -->' +

@@ -73,6 +73,9 @@ videogular,
 .md-select-value .md-select-icon {
   margin-top: -6px;
 }
+md-dialog-content {
+  padding: 0 !important;
+}
 /** /GENERAL **/
 /** TEMPLATE **/
 .main-content {
@@ -1101,6 +1104,9 @@ md-dialog.upload-dialog #multiple-files-upload ul li span {
 }
 #atari-container #javatari-screen {
   margin: 10px auto;
+}
+#dosbox-dialog-container {
+  padding: 0;
 }
 /* /EMULATORS */
 /* STYLE EXTRA */
