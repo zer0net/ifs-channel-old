@@ -1,5 +1,5 @@
-app.directive('dosbox', ['$location','$rootScope',
-	function($location,$rootScope) {
+app.directive('dosbox', ['$location','$rootScope','$timeout',
+	function($location,$rootScope,$timeout) {
 
 		var controller = function($scope,$element) {
 

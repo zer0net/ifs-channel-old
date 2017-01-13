@@ -16,7 +16,7 @@ app.directive('atariEmulator', ['$location','$timeout',
 		var template =  '<section id="javatari">' +
 							'<div style="margin:0 auto; min-height: 594px;">' +
 							    '<div id="javatari-screen" style="margin-bottom:5px;"></div>' +
-							    '<div id="javatari-console-panel" style="margin: 0 auto;"></div>' +
+							    '<div id="javatari-console-panel" style="margin: 0 auto; display:none;"></div>' +
 							'</div>'+
 							'<script src="assets/lib/games/javatari/javatari.js" type="text/javascript" charset="utf-8"></script>' +
 						'</section>';

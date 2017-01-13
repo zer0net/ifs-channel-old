@@ -433,7 +433,7 @@ md-dialog.upload-dialog {
   border-radius: 0;
 }
 md-dialog.upload-dialog #multiple-files-upload {
-  padding: 0;
+  padding: 10px;
 }
 md-dialog.upload-dialog #multiple-files-upload ul {
   padding: 0;
