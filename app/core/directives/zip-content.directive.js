@@ -19,7 +19,6 @@ app.directive('zipContent', [
 							var file = zip.files[i];
 							$scope.zipFiles.push(file);
 							$scope.$apply();
-							console.log($scope.zipFiles);
 						}
 				    });
 				});
